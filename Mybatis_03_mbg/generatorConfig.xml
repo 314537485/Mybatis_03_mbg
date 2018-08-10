@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<!-- 
+		targetRuntime="MyBatis3Simple":生成简单版的CRUD
+		MyBatis3:豪华版
+	 -->
+<!-- 这个 classPathEntry 写不写都行，运行时会找项目中的已经引入的mysql-connector-java-5.1.37-bin.jar-->	 
+  <classPathEntry location="D:/java/jars/mysql-connector-java-5.1.37-bin.jar" />
+
+  <context id="DB2Tables" targetRuntime="MyBatis3">
+	<commentGenerator>    
+       <property name="suppressDate" value="true"/> 
+       <property name="" value=""/>   
+       <!-- 是否去除自动生成的注释 true：是 ： false:否 -->    
+       <property name="suppressAllComments" value="true"/>    
+    </commentGenerator>
+    <!-- jdbcConnection：指定如何连接到目标数据库 -->
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://localhost:3306/mybatis?allowMultiQueries=true"
+        userId="root"
+        password="root">
+    </jdbcConnection>
+
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+    
+	<!-- javaModelGenerator：指定javaBean的生成策略 
+	targetPackage="test.model"：目标包名
+	targetProject="\MBGTestProject\src"：目标工程
+	-->
+    <javaModelGenerator targetPackage="com.mybatis.bean" targetProject=".\src">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+	<!-- sqlMapGenerator：sql映射生成策略mapper.xml所在位置： -->
+    <sqlMapGenerator targetPackage="com.mybatis.dao"  targetProject=".\conf">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+	<!-- javaClientGenerator:指定mapper接口所在的位置 -->
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.mybatis.dao"  targetProject=".\src">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+
+	<!-- 指定要逆向分析哪些表：根据表要创建javaBean -->
+	<table schema="mybatis" tableName="tbl_employee" domainObjectName="Employee" ></table>
+	<table schema="mybatis" tableName="tbl_dept" domainObjectName="Department"></table>
+    
+    <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="Customer" >
+      <property name="useActualColumnNames" value="true"/>
+      <generatedKey column="ID" sqlStatement="DB2" identity="true" />
+      <columnOverride column="DATE_FIELD" property="startDate" />
+      <ignoreColumn column="FRED" />
+      <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
+    </table>
+
+  </context>
+</generatorConfiguration>
